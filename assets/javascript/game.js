@@ -1,18 +1,39 @@
 
-var guesses = 10;
+var guesses = 9;
 document.getElementById("guesslist").innerHTML = guesses;
 
 var guess_array = 0;	
  var userGuess = ["Null"];
- var guess_string = "Null";
- var word_list = ["FUNCTION","CONCATENATE","VARIABLE","METHOD","OBJECT","COMPILER","CONSOLE"];
+ var guess_string = "";
+ var word_list = ["SWORD","ARROW","SHERIFF","NOTTINGHAM","LITTLEJOHN","ROBINHOOD","MAIDMARIAN"];
  var start = true;
  var word_string = "";
  var word = [""];
  var blank_word = [""];
  var word_display = "";
  var wins = 0;
-	
+ var audio1 = new Audio('assets/sounds/rope-swing.mp3');
+ var audio2 = new Audio('assets/sounds/bow-fire.mp3');
+ var audio3 = new Audio('assets/sounds/rope-snap.mp3');
+ var elem = document.getElementById("robin"); 
+  var elem2 = document.getElementById("arrow"); 
+  var elem1 = document.getElementById("rope-break")
+
+document.getElementById("wincount").innerHTML = wins;
+var image_src = [
+"assets/images/image-1.png",
+"assets/images/image-2.png",
+"assets/images/image-3.png",
+"assets/images/image-4.png",
+"assets/images/image-5.png",
+"assets/images/image-6.png",
+"assets/images/image-7.png",
+"assets/images/image-8.png",
+"assets/images/image-9.png",
+"assets/images/death.png"];
+var image_array = 1;
+// robin_animate();
+
 
 	
 
@@ -28,7 +49,7 @@ var guess_array = 0;
     	start=false;
     	for (var i = 0; i < word.length; i++) {
     		blank_word[i]= "_";
-    		word_display = word_display + blank_word[i];
+    		word_display = word_display + "   " + blank_word[i] + "   ";
     	}
 
     	//Display initial elements
@@ -90,6 +111,9 @@ var guess_array = 0;
 	   	if (!correct) {
 
 	   		guesses--;
+	   		document.getElementById("content").src = image_src[image_array];
+	   		audio1.play();
+	   		image_array++;
 	   	}
 	    
 	   	//Check to see if word has been completed
@@ -107,7 +131,7 @@ var guess_array = 0;
 	    var word_display = "";
 	   	
 	   	for (var i = 0; i < blank_word.length; i++) {
-    	word_display = word_display + blank_word[i];
+    	word_display = word_display + "    " + blank_word[i] + "    ";
 	    }
 	   
 
@@ -119,29 +143,22 @@ var guess_array = 0;
 
 	   	 //Check if game has been won or lost and reset variables
 	    if (word_complete) {
-	    	alert('You won! Press any key to play again.');
+	    	
+	    	robin_animate();
+	    	
+	    	
 	    	start=true;
 	    	wins++;
 	    	document.getElementById("wincount").innerHTML = wins;
 	    }
 	    
 	   	if (guesses===0) {
-	   		alert('Game Over!');
+	   		
+	   		death();
 	   		start=true;
 	   	}
 
-	   	if (start) {
-
-			word_string = "";
-			word = [""];
-			blank_word = [""];
-			letters_guessed = [""];
-			guesses=10;
-			guess_array = 0;
-			userGuess = [""];
-			guess_string = ""
-
-	   	}
+	   	
 	   }
 
    }
@@ -149,3 +166,82 @@ var guess_array = 0;
    }
 };
 
+//Winning animation
+
+function robin_animate() {
+
+
+ 
+  elem.style.display = "inline";  
+  var pos = 0;
+  var id = setInterval(frame, 5);
+  
+  function frame() {
+    if (pos === 250) {
+      clearInterval(id);
+      elem.src = "assets/images/robin-hood-shoot.png";
+      audio2.play();
+      arrow_animate();
+
+    } else {
+      pos++; 
+      elem.style.bottom = -500 + pos + 'px'; 
+     
+      
+    }
+    
+  }
+
+
+}
+
+function arrow_animate() {
+
+	elem2.style.display = "inline";  
+  var pos = 0;
+  var id = setInterval(frame, 1);
+  function frame() {
+    if (pos === 800) {
+      clearInterval(id);
+      reset();
+      
+    } else {
+      pos=pos+2; 
+      elem2.style.left = 200 + pos + 'px'; 
+      if (pos === 350) {
+      	elem1.style.display = "inline";
+      	audio3.play();
+
+
+      }
+      
+    }
+  }
+
+}
+
+function reset() {
+
+	elem2.style.display = "none";
+	elem1.style.display = "none";
+	elem.style.display = "none";
+	elem.src = 'assets/images/robin-hood.png';
+	elem2.style.left = 200 + 'px';
+	elem.style.bottom = -500 + 'px';
+	word_string = "";
+	word = [""];
+	blank_word = [""];
+	letters_guessed = [""];
+	guesses=9;
+	guess_array = 0;
+	userGuess = [""];
+	guess_string = ""
+	image_array=1;
+	document.getElementById("content").src = image_src[0];
+};
+
+function death() {
+
+
+	
+}

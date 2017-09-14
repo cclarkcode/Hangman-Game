@@ -2,26 +2,43 @@
 <html>
 <head>
 	<title>Hangman Game</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Rouge+Script|UnifrakturCook:700" rel="stylesheet">
+
 </head>
 <body>
+<!-- <button onclick='robin_animate()'> Win </button> -->
 
-<h1> Hangman </h1>
 
+<div class="container"> 
+<div class="head-container">
+<h1 class ="main-title"> HANGMAN </h1>
+</div>
+<div class="image-panel">
+	<img id="content" class="image" src="assets/images/image-1.png">
+	<!-- content -->
+</div>
+<div class="game-panel">
 
-<h3> Press any key to get started </h3>
+<h3 id=""> Press any key to get started </h3>
 
-<h3> Wins </h3><span id="wincount"></span>
-
+<h3> Wins:   <span id="wincount"></span></h3>
 <h2> Word </h2>
 <h3 id="display"></h3>
 
-<h4> Guesses Remaining: </h4><span id="guesslist"></span>
+<h3> Guesses Remaining:    <span id="guesslist"></span></h4>
+<br>
 
-<h4> Letters Guessed: </h4> <span id="letters-guessed"></span>
+<h2> Letters Guessed: </h2> <h3 id="letters-guessed"></h3>
 
+</div>
+</div>
 
-
-
+<img id="robin" src="assets/images/robin-hood.png">
+<img id="arrow" src="assets/images/arrow.png">
+<img id="rope-break" src="assets/images/rope-break.png"
 <!-- Link to Javascript file -->
 <script type="text/javascript" src="assets/javascript/game.js"></script>
 
