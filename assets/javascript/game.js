@@ -305,11 +305,11 @@ death: function() {
 //Start of actual script
 //Start of actual script
 
-game.winAnimate();
+
 game.initial();
 
 
-// This function is run whenever the user presses a key.
+// This function is run whenever the user presses a key
 document.onkeyup = function(event) { 
 
 	if (game.start) {
