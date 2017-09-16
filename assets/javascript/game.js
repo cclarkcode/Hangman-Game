@@ -1,26 +1,27 @@
 
-var guesses = 9;
-document.getElementById("guesslist").innerHTML = guesses;
-
-var guess_array = 0;	
- var userGuess = ["Null"];
- var guess_string = "";
- var word_list = ["SWORD","ARROW","SHERIFF","NOTTINGHAM","LITTLEJOHN","ROBINHOOD","MAIDMARIAN"];
- var start = true;
- var word_string = "";
- var word = [""];
- var blank_word = [""];
- var word_display = "";
- var wins = 0;
- var audio1 = new Audio('assets/sounds/rope-swing.mp3');
- var audio2 = new Audio('assets/sounds/bow-fire.mp3');
- var audio3 = new Audio('assets/sounds/rope-snap.mp3');
  var elem = document.getElementById("robin"); 
-  var elem2 = document.getElementById("arrow"); 
-  var elem1 = document.getElementById("rope-break")
+ var elem2 = document.getElementById("arrow"); 
+ var elem1 = document.getElementById("rope-break")
 
-document.getElementById("wincount").innerHTML = wins;
-var image_src = [
+var game = {
+
+guesses: 9,
+guess_array: 0,
+userGuess: [""],
+guess_string: "",
+word_list: ["SWORD","ARROW","SHERIFF","NOTTINGHAM","LITTLEJOHN","ROBINHOOD","MAIDMARIAN"],
+start: true,
+word_string: "",
+word: [""],
+blank_word: [""],
+word_display: "",
+wins: 0,
+audio1: new Audio('assets/sounds/rope-swing.mp3'),
+audio2: new Audio('assets/sounds/bow-fire.mp3'),
+audio3: new Audio('assets/sounds/rope-snap.mp3'),
+audio4: new Audio('assets/sounds/death.mp3'),
+audio5: new Audio('assets/sounds/trumpets.mp3'),
+image_src: [
 "assets/images/image-1.png",
 "assets/images/image-2.png",
 "assets/images/image-3.png",
@@ -30,162 +31,191 @@ var image_src = [
 "assets/images/image-7.png",
 "assets/images/image-8.png",
 "assets/images/image-9.png",
-"assets/images/death.png"];
-var image_array = 1;
-// robin_animate();
+"assets/images/death.png"],
+image_array: 1,
+currentguess: "",
+you_win: false,
 
+// Set up the game
+
+initial: function() {
+
+	$("#guesslist").html(game.guesses);
+	$("#display").html(game.word_display);
+	$("#letters_guessed").html(game.guess_string);
+	$("#wincount").html(game.wins);
+
+	},
+
+// Display word (as blanks)
+
+game_start: function() {
+
+
+
+		game.word_string = game.word_list[Math.floor(Math.random() * game.word_list.length)];
+    	game.word  = game.word_string.split('');
+    	game.word_display = ""
+    	game.start=false;
+    	console.log(game.word_string);
+    	for (var i = 0; i < game.word.length; i++) {
+    		
+    			game.blank_word[i]= "_";
+    		if(i===0) {
+    			$("#display").html(game.blank_word[i]);
+    		}
+    		else {
+    			$("#display").append("   " + game.blank_word[i]);
+    		}
+    		
+    	}
+
+    
+	},
+
+// Make sure guess is valud character and hasn't already been guessed
+
+valid: function() {
+
+
+	var valid = true;
 
 	
 
-    // This function is run whenever the user presses a key.
-    document.onkeyup = function(event) { 
+	if (game.currentguess >= 'A' && game.currentguess <= 'Z') {
 
-    //Determine game start or game continue
-    if (start) {
-
-    	word_string = word_list[Math.floor(Math.random() * word_list.length)];
-    	word  = word_string.split('');
-    	word_display = ""
-    	start=false;
-    	for (var i = 0; i < word.length; i++) {
-    		blank_word[i]= "_";
-    		word_display = word_display + "   " + blank_word[i] + "   ";
-    	}
-
-    	//Display initial elements
-    	 document.getElementById("guesslist").innerHTML = guesses; 
-    	 document.getElementById("display").innerHTML = word_display;
-    	 document.getElementById("letters-guessed").innerHTML = guess_string;
-    	 document.getElementById("wincount").innerHTML = wins;
-    }
-
-    else {
-    
-    var currentguess = event.key.toUpperCase();
-    console.log(word);
-
-    // Check to see whether keystroke is a valid character
-
-    if (currentguess >= 'A' && currentguess <= 'Z') {
-    	var already_guessed = false;
 	    // Check to see whether letter has already been guessed
-	    if (guess_array!==0) {
+	    if (game.guess_array!==0) {
 
-	    	for (var i = 0; i < guess_array; i++) {
+	    	for (var i = 0; i < game.guess_array; i++) {
 	    		
-		    	if (userGuess[i] == currentguess) {
+		    	if (game.userGuess[i] == game.currentguess) {
 
-		    		already_guessed = true;
+		    		valid = false;
 		    	
 		    	}
 	    	}
+
+		}
+	}
+	else {
+		
+		valid=false;
+	}
+
+	return valid;
+
+},
+
+//Add guessed letter to array of guesses
+
+add_guess: function() {
+
+
+	    game.userGuess[game.guess_array]=game.currentguess;
+	    
+	    if (game.guess_array === 0) {
 	    	
-	    }
-
-	    // Add letter to string of letters guessed and increase array
-	    if (!already_guessed) {
-	    userGuess[guess_array]=currentguess;
-
-	    if (guess_array === 0) {
-	    	guess_string = userGuess[guess_array]
+	    	$("#letters-guessed").html(game.userGuess[game.guess_array]);
 	    }
 	    else {
 
-	    	guess_string= guess_string + " , " + userGuess[guess_array];
+	    	$("#letters-guessed").append(" , " + game.userGuess[game.guess_array]);
 	    }
-	    guess_array++;
-	   	
+	    game.guess_array++;
 
-	   	// Determine whether guess was correct
-	   	var correct=false;
-	   	console.log(word);
-	   	for (var i = 0; i < word.length; i++) {
-	   		if (currentguess===word[i]) {
-	   			blank_word[i]=word[i];
+
+
+},
+
+// Check to see whether guess is correct
+
+is_correct: function() {
+
+	var correct=false;
+	  
+	   	for (var i = 0; i < game.word.length; i++) {
+	   		if (game.currentguess===game.word[i]) {
+	   			game.blank_word[i]=game.word[i];
 	   			correct=true;
 	   		}
 	   	}
 
-	   	// Subtract a guess if letter choice was wrong
+	   	return correct;
 
-	   	if (!correct) {
+},
 
-	   		guesses--;
-	   		document.getElementById("content").src = image_src[image_array];
-	   		audio1.play();
-	   		image_array++;
-	   	}
-	    
-	   	//Check to see if word has been completed
-	   	else {
-	   		var word_complete=true;
-	   		for (var i = 0; i < word.length; i++) {
-	   			if (word[i] !== blank_word[i]) {
+// Add all instances of correct guess to word display and check to see if word completed
 
-	   				word_complete = false;
+right: function() {
+
+	game.you_win=true;
+
+	for (var i = 0; i < game.word.length; i++) {
+
+		if (i===0) {
+
+			$("#display").html(game.blank_word[i]);
+		}
+		else {
+
+			$("#display").append("   " + game.blank_word[i]);
+		}
+	   	if (game.word[i] !== game.blank_word[i]) {
+
+	   		game.you_win = false;
 	   			}
-	   		}
-	   	}
-	    //Turn character array of guessed word into string for display
-
-	    var word_display = "";
-	   	
-	   	for (var i = 0; i < blank_word.length; i++) {
-    	word_display = word_display + "    " + blank_word[i] + "    ";
-	    }
-	   
-
-	  
-	   	// Display updated elements
-	    document.getElementById("guesslist").innerHTML = guesses;    
-	   	document.getElementById("letters-guessed").innerHTML = guess_string;
-	   	document.getElementById("display").innerHTML = word_display;
-
-	   	 //Check if game has been won or lost and reset variables
-	    if (word_complete) {
-	    	
-	    	robin_animate();
-	    	
-	    	
-	    	start=true;
-	    	wins++;
-	    	document.getElementById("wincount").innerHTML = wins;
-	    }
-	    
-	   	if (guesses===0) {
-	   		
-	   		death();
-	   		start=true;
 	   	}
 
+	if(game.you_win) {
+
+		game.wins++;
+		game.winAnimate();
+
+	}
+
 	   	
-	   }
+},
 
-   }
-   
-   }
-};
+// Subtract chance if guess is incorrect and check for game lost
 
-//Winning animation
+wrong: function() {
 
-function robin_animate() {
+	game.guesses--;
+	$("#content").attr("src",game.image_src[game.image_array]);
+	$("#guesslist").html(game.guesses);
+	if (game.guesses === 0) {
+
+		game.death();
+	}
+	else {
+
+		game.audio1.play();
+		game.image_array++;
+
+	}
+},
+
+//Play winning animation
+
+winAnimate: function () {
 
 
  
   elem.style.display = "inline";  
   var pos = 0;
   var id = setInterval(frame, 5);
-  
+  game.audio5.play();
   function frame() {
     if (pos === 250) {
       clearInterval(id);
       elem.src = "assets/images/robin-hood-shoot.png";
-      audio2.play();
-      arrow_animate();
+      game.audio2.play();
+      game.arrowAnimate();
 
     } else {
       pos++; 
-      elem.style.bottom = -500 + pos + 'px'; 
+      elem.style.bottom = -440 + pos + 'px'; 
      
       
     }
@@ -193,55 +223,127 @@ function robin_animate() {
   }
 
 
-}
+},
 
-function arrow_animate() {
+//Second part of winning animation
 
-	elem2.style.display = "inline";  
-  var pos = 0;
-  var id = setInterval(frame, 1);
-  function frame() {
-    if (pos === 800) {
-      clearInterval(id);
-      reset();
-      
-    } else {
-      pos=pos+2; 
-      elem2.style.left = 200 + pos + 'px'; 
-      if (pos === 350) {
-      	elem1.style.display = "inline";
-      	audio3.play();
+arrowAnimate: function () {
+
+		elem2.style.display = "inline";  
+		  var pos = 0;
+		  var id = setInterval(frame, 1);
+		  function frame() {
+		    if (pos === 800) {
+		      clearInterval(id);
+		      game.reset();
+		      
+		    } else {
+		      pos=pos+2; 
+		      elem2.style.left = 130 + pos + 'px'; 
+		      if (pos === 200) {
+		      	elem1.style.display = "inline";
+		      	game.audio3.play();
 
 
-      }
-      
-    }
-  }
+		      }
+		      
+		    }
+		  }
 
-}
+},
 
-function reset() {
+//Reset game
+
+reset: function() {
 
 	elem2.style.display = "none";
 	elem1.style.display = "none";
 	elem.style.display = "none";
 	elem.src = 'assets/images/robin-hood.png';
-	elem2.style.left = 200 + 'px';
-	elem.style.bottom = -500 + 'px';
-	word_string = "";
-	word = [""];
-	blank_word = [""];
-	letters_guessed = [""];
-	guesses=9;
-	guess_array = 0;
-	userGuess = [""];
-	guess_string = ""
-	image_array=1;
-	document.getElementById("content").src = image_src[0];
-};
+	elem2.style.left = 130 + 'px';
+	elem.style.bottom = -440 + 'px';
+	game.word_string = "";
+	game.word = [""];
+	game.blank_word = [""];
+	game.letters_guessed = [""];
+	game.guesses=9;
+	game.guess_array = 0;
+	game.userGuess = [""];
+	game.guess_string = " "
+	game.image_array=1;
+	game.start=true;
+	$("#letters-guessed").html(game.guess_string);
+	$("#wincount").html(game.wins);
+	$("#content").attr("src", game.image_src[0]);
+	$("#guesslist").html(game.guesses);
+	console.log("Game reset");
 
-function death() {
+	return function () {
+		alert("reset")
+	}
+
+},
+
+//Play dying sound and reset game
+
+death: function() {
+
+
+	game.audio4.play();
+	setTimeout(game.reset, 1500);
+
+},
 
 
 	
+};
+
+
+//Start of actual script
+//Start of actual script
+//Start of actual script
+//Start of actual script
+//Start of actual script
+
+game.winAnimate();
+game.initial();
+
+
+// This function is run whenever the user presses a key.
+document.onkeyup = function(event) { 
+
+	if (game.start) {
+
+	game.game_start();
+
 }
+
+else {
+
+	game.currentguess = event.key.toUpperCase();
+	if (game.valid()) {
+
+
+		game.add_guess();
+
+		if(game.is_correct()) {
+
+			game.right();
+			
+
+		}
+
+	else {
+
+		game.wrong();
+	}
+
+	}
+	
+
+}
+
+
+};  // End of event function
+
+

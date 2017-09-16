@@ -11,7 +11,7 @@
 <body>
 <!-- <button onclick='robin_animate()'> Win </button> -->
 
-
+<div class="outer-container">
 <div class="container"> 
 <div class="head-container">
 <h1 class ="main-title"> HANGMAN </h1>
@@ -22,13 +22,13 @@
 </div>
 <div class="game-panel">
 
-<h3 id=""> Press any key to get started </h3>
+<h3> Press any key to get started </h3>
 
 <h3> Wins:   <span id="wincount"></span></h3>
 <h2> Word </h2>
 <h3 id="display"></h3>
 
-<h3> Guesses Remaining:    <span id="guesslist"></span></h4>
+<h3> Guesses Remaining:    <span id="guesslist"></span></h3>
 <br>
 
 <h2> Letters Guessed: </h2> <h3 id="letters-guessed"></h3>
@@ -38,8 +38,10 @@
 
 <img id="robin" src="assets/images/robin-hood.png">
 <img id="arrow" src="assets/images/arrow.png">
-<img id="rope-break" src="assets/images/rope-break.png"
+<img id="rope-break" src="assets/images/rope-break.png">
+</div>
 <!-- Link to Javascript file -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="assets/javascript/game.js"></script>
 
 

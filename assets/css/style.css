@@ -92,9 +92,9 @@ body {
 #robin {
 
 	position: absolute;
-	left: 100px;
-	bottom: -500px;
-	height: 300px;
+	left: 25px;
+	bottom: -440px;
+	height: 200px;
 	width: auto;
 	z-index: 2;
 	display: none;
@@ -103,9 +103,9 @@ body {
 
 #arrow {
 	position: absolute;
-	left: 200px;
+	left: 130px;
 	top: 150px;
-	height: 17px;
+	height: 14px;
 	z-index: 3;
 	display: none;
 }
@@ -113,7 +113,7 @@ body {
 #rope-break {
 
 	position: absolute;
-	left: 632px;
+	left: 382px;
 	top: 154px;
 	z-index: 2;
 	display: none;
@@ -123,4 +123,13 @@ body {
 
 	font-family: 'Rouge Script', cursive;
 	font-weight: bold;
+}
+
+.outer-container {
+
+	width: 1024px;
+	max-width: 1024px;
+	margin: auto;
+	position: relative;
+	/*overflow: auto;*/
 }
