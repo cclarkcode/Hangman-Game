@@ -1,10 +1,10 @@
-
+// Jquery animation elements
  var elem = document.getElementById("robin"); 
  var elem2 = document.getElementById("arrow"); 
  var elem1 = document.getElementById("rope-break")
 
 var game = {
-
+//Game Variables
 guesses: 9,
 guess_array: 0,
 userGuess: [""],
@@ -16,11 +16,13 @@ word: [""],
 blank_word: [""],
 word_display: "",
 wins: 0,
+//Game sounds
 audio1: new Audio('assets/sounds/rope-swing.mp3'),
 audio2: new Audio('assets/sounds/bow-fire.mp3'),
 audio3: new Audio('assets/sounds/rope-snap.mp3'),
 audio4: new Audio('assets/sounds/death.mp3'),
 audio5: new Audio('assets/sounds/trumpets.mp3'),
+// Progressive Hangman images
 image_src: [
 "assets/images/image-1.png",
 "assets/images/image-2.png",
@@ -309,7 +311,7 @@ death: function() {
 game.initial();
 
 
-// This function is run whenever the user presses a key
+// On key function whenever user registers a guess
 document.onkeyup = function(event) { 
 
 	if (game.start) {
